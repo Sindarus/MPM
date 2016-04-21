@@ -1,35 +1,30 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from numpy import matrix
+from numpy import matrix, cos, sin
 import numpy as np
 import matplotlib.pyplot as plt
 from copy import deepcopy
 
-# w=int(input("Rentrer la valeur de w : "))
-
-# #x = matrix(str(x)+' '+str(dx)+' '+str(y)+' '+str(dy))
-# #u = matrix(str(ux)+' '+str(uy))
-
-# A = matrix('0 1 0 0; '+str(3*w*w)+' 0 0 '+str(2*w)+'; 0 0 0 1; 0 '+str(-2*w)+' 0 0')
-# B = matrix('0 1 0 0; 0 0 0 1')
-
-# print (A[3, 1])
-# print (A)
-# print (B)
-
-
 #DEBUT =======================================
 #configuration du problème
 pi = 3.1415926
-T = 5480                                #T
-pas = 1                                 #pas pour Euler, en seconde
-nb_pas = int(T/pas)                     #nombre de pas pour arriver a T
-i_max = nb_pas-1                        #index max du temps
+
+T = 1
 w = (2*pi)/T                            #oméga
+
 e = 0.001
 rho = 0.03
+pas = 0.005                             #pas pour Euler, en seconde
+nb_boucle = 5000
 
+Tmax = 1*T
+nb_pas = int(Tmax/pas)                  #nombre de pas pour arriver a Tmax
+i_max = nb_pas-1                        #index max du temps
+
+x_depart = 0.2
+
+#initialisations
 A = matrix([[0, 1, 0, 0],
             [3*w**2, 0, 0, 2*w],
             [0, 0, 0, 1],
@@ -42,7 +37,7 @@ B = matrix([[0, 0],
             [0, 1]])
 Bt = np.transpose(B)
 
-x0 = matrix([[1],
+x0 = matrix([[x_depart],
             [0],
             [0],
             [0]])
@@ -89,77 +84,69 @@ gradJu = [matrix([[0],
       for i in range(nb_pas)
      ]
 
-#initialisations
-print("ETAPE 1\n") #=============================================
-x[0] = x0
+# METHODE ==========================================================================
+for k in range(nb_boucle):
+    print("Itération " + str(k))
+    #initialisations
+    #print("ETAPE 1") #=============================================
+    x[0] = x0
+    for i in range(nb_pas):
+        xp[i] = np.dot(A, x[i]) + np.dot(B, u[i])
+
+        if(i != nb_pas-1):    # pour la derniere itération, on ne calcule pas ca :
+            x[i+1] = x[i] + pas * xp[i]
+
+    #print("ETAPE 2") #=============================================
+    p[i_max] = deepcopy(x[i_max])
+
+    i = i_max
+    while i >= 0:
+        pp[i] = - np.dot(At, p[i])
+        if i != 0:  #pour la dernière itération, on fait pas ca :
+            p[i-1] = p[i] - pas * pp[i]
+        i = i - 1
+
+    #print("ETAPE 3") #=============================================
+    for i in range(nb_pas):
+        gradJu[i] = e*u[i] + np.dot(Bt, p[i])
+
+    #print("ETAPE 4") #=============================================
+    for i in range(nb_pas):
+        u2[i] = u[i] - rho*gradJu[i]
+
+    #print("Preparation de l'itération suivante") #=================
+    u = deepcopy(u2)
+
+# changement de base ===============================================================
+print("Changement de coordonnées")
+#x dans la base de la terre
+x_mieux = [0 for i in range(nb_pas)]
+y_mieux = [0 for i in range(nb_pas)]
+x_iss = [0 for i in range(nb_pas)]
+y_iss = [0 for i in range(nb_pas)]
+
 for i in range(nb_pas):
-    xp[i] = np.dot(A, x[i]) + np.dot(B, u[i])
+    x1 = float(x[i][0][0])
+    x2 = float(x[i][2][0])
+    x_mieux[i] = x1*cos(w*i*pas) - x2*sin(w*i*pas) + cos(w*i*pas)
+    y_mieux[i] = x1*sin(w*i*pas) - x2*cos(w*i*pas) + sin(w*i*pas)
+    x_iss[i] = cos(w*i*pas)
+    y_iss[i] = sin(w*i*pas)
 
-    if(i != nb_pas-1):    # pour la derniere itération, on ne calcule pas ca :
-        x[i+1] = x[i] + pas * xp[i]
-
-print("ETAPE 2\n") #=============================================
-p[i_max] = deepcopy(x[i_max])
-
-i = i_max
-while i >= 0:
-    pp[i] = - np.dot(At, p[i])
-    if i != 0:  #pour la dernière itération, on fait pas ca :
-        p[i-1] = p[i] - pas * pp[i]
-    i = i - 1
-
-print("ETAPE 3\n") #=============================================
-for i in range(nb_pas):
-    gradJu[i] = e*u[i] + np.dot(Bt, p[i])
-
-print("ETAPE 4\n") #=============================================
-for i in range(nb_pas):
-    u2[i] = u[i] - rho*gradJu[i]
-
-print("Preparation de l'itération suivante") #===================
-u = deepcopy(u2)
-
-
+# PLOT ============================================================================
 print("PLOT\n");
 
 fig = plt.figure()
 
-#plot étape1
 plt.plot(
-   [float(x[i][0][0]) for i in range(nb_pas)],
-   [float(x[i][2][0]) for i in range(nb_pas)]
+   x_mieux,
+   y_mieux,
+   "r",
+   x_iss,
+   y_iss,
+   "g"
 )
-plt.xlabel("x de x")
-plt.ylabel("y de x")
-
-plt.show()
-
-#plot étape2
-plt.plot(
-   [float(p[i][1][0]) for i in range(nb_pas)],
-   [float(p[i][3][0]) for i in range(nb_pas)]
-)
-plt.xlabel("x de p")
-plt.ylabel("y de p")
-
-plt.show()
-
-#plot étape3
-plt.plot(
-   [float(gradJu[i][0][0]) for i in range(nb_pas)],
-   [float(gradJu[i][1][0]) for i in range(nb_pas)]
-)
-plt.xlabel("x de gradJu")
-plt.ylabel("y de gradJu")
-
-plt.show()
-
-#plot étape4
-plt.plot(
-   [float(u2[i][0][0]) for i in range(nb_pas)],
-   [float(u2[i][1][0]) for i in range(nb_pas)]
-)
-plt.xlabel("x de u2")
-plt.ylabel("y de u2")
+plt.xlabel("x")
+plt.ylabel("y")
 
 plt.show()
