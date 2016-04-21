@@ -116,6 +116,9 @@ print("ETAPE 4\n") #=============================================
 for i in range(nb_pas):
     u2[i] = u[i] - rho*gradJu[i]
 
+print("Preparation de l'itération suivante") #===================
+u = deepcopy(u2)
+
 
 print("PLOT\n");
 
