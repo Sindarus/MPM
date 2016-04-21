@@ -19,7 +19,8 @@ import matplotlib.pyplot as plt
 pi = 3.1415926
 T = 5480                                #T
 pas = 1                                 #pas pour Euler, en seconde
-nb_pas = int(T/pas)                       #nombre de pas pour arriver a T
+nb_pas = int(T/pas)                     #nombre de pas pour arriver a T
+i_max = nb_pas-1                        #index max du temps
 w = (2*pi)/T                            #oméga
 
 #initialisations
@@ -52,20 +53,21 @@ for i in range(nb_pas):
         x[i+1][0] = x[i][0] + pas * xp[i][0]
         x[i+1][1] = x[i][1] + pas * xp[i][1]
 
+#étape 2
+# p = [[0,0] for i in range(nb_pas)]  #p au cour du temps
+# pp = [[0,0] for i in range(nb_pas)] #p prime au cour du temps
+
+# p[i_max] = x[i_max]
+# i = i_max
+# while i >= 0:
+#     pp[i_max] =
+#     i--
+
+
+
+#===============================================
 print("PLOT\n");
 
-#===============================================
-print("x = " + str(x))
-# print("xp = " + str(xp))
-# print("xpp = " + str(xpp))
-
-#===============================================
-# x_to_print = [x[i][0] for i in range(nb_pas)]
-# y_to_print = [x[i][1] for i in range(nb_pas)]
-# print(x_to_print)
-# print(y_to_print)
-
-#===============================================
 fig = plt.figure()
 
 # ax1 = fig.add_subplot(311)
@@ -77,8 +79,6 @@ fig = plt.figure()
 # plt.plot(base_de_temps, xp)
 # plt.xlabel("temps")
 # plt.ylabel("xp")
-
-
 
 
 plt.plot(
