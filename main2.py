@@ -16,13 +16,15 @@ w = (2*pi)/T                            #oméga
 e = 0.001
 rho = 0.03
 pas = 0.005                             #pas pour Euler, en seconde
-nb_boucle = 5000
+nb_boucle = 500
 
 Tmax = 1*T
 nb_pas = int(Tmax/pas)                  #nombre de pas pour arriver a Tmax
 i_max = nb_pas-1                        #index max du temps
 
-x_depart = 0.2
+x_depart = 0.1                            #x1 de départ
+
+
 
 #initialisations
 A = matrix([[0, 1, 0, 0],
@@ -112,10 +114,7 @@ for k in range(nb_boucle):
 
     #print("ETAPE 4") #=============================================
     for i in range(nb_pas):
-        u2[i] = u[i] - rho*gradJu[i]
-
-    #print("Preparation de l'itération suivante") #=================
-    u = deepcopy(u2)
+        u[i] = u[i] - rho*gradJu[i]
 
 # changement de base ===============================================================
 print("Changement de coordonnées")
