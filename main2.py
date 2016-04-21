@@ -16,7 +16,7 @@ w = (2*pi)/T                            #oméga
 e = 0.001
 rho = 0.03
 pas = 0.005                             #pas pour Euler, en seconde
-nb_boucle = 500
+nb_boucle = 100
 
 Tmax = 1*T
 nb_pas = int(Tmax/pas)                  #nombre de pas pour arriver a Tmax
