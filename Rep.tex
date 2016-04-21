@@ -1,0 +1,237 @@
+ 
+\documentclass[a4paper,10pt]{article}
+%Mai 2009
+
+\usepackage{amsmath, amssymb,amsfonts,  mathrsfs}
+\usepackage{amsthm}%\usepackage[T1]{fontenc}
+\usepackage{a4wide}
+\usepackage{mathtools} %overbrace
+\usepackage[latin1]{inputenc}
+%\usepackage{fancyhdr} %pour les hauts et bas de page
+\usepackage[francais]{babel}% donne de bonnes c\^{\prime}esures  en francais
+\usepackage{titlesec}%pour modifier le style des sections
+\usepackage{float}%pour fixer les flottants
+\usepackage{url}%pour ecrire une adresse d^{\prime}un site web
+\usepackage[all]{xy}%pour faire des diagrammes
+\usepackage{nopageno} % pour supproimer les numeros des pages
+\usepackage{graphicx}
+\usepackage{pdfsync}
+\pagestyle{myheadings}
+\markright{Clément Saintier \& Melchior Vila \\ Rendez-vous Spatiale}
+\pagenumbering{Roman}
+
+%%%%%%%%%  interlignes et indentation
+
+\begin{document}
+\begin{center}
+\textbf{\huge{Rendez-vous Spatiale}}
+\end{center}
+\medskip
+
+\section{Dérivé de Gateau $J^{\prime}(u,\delta u)$}
+
+
+\begin{itemize}
+
+  \item Déterminer la dérivé de Gateau de la fonction $x(u)$. En déduire la dérivé de Gateau de $J$.
+
+  \begin{align*}
+    x^{\prime}(u,\delta u) &= \lim_{\lambda\to 0^+} \frac{x(u+\lambda\delta u) - f(u)}{\lambda}\\
+    &= \lim_{\lambda\to 0^+} \frac{Ax(u+\lambda\delta u,t) + B(u(t)+\lambda\delta u) - Ax(u,t) - Bu(t)}{\lambda}\\
+    &= \lim_{\lambda\to 0^+} \frac{Ax(u+\lambda\delta u,t) + B\lambda\delta u - Ax(u,t)}{\lambda}\\
+    &= B\delta u + \lim_{\lambda\to 0^+} \frac{Ax(u+\lambda\delta u,t) - Ax(u,t)}{\lambda}\\
+    &= B\delta u + Ax^{\prime}(u, \delta u)
+  \end{align*}
+
+  On en déduit la dérivé de Gateau de $J$.
+
+  \begin{align*}
+    J^{\prime}(u,\delta u) = &\lim_{\lambda\to 0^+} \frac{J(u+\lambda\delta u) - J(u)}{\lambda}\\
+    = &\lim_{\lambda\to 0^+} \overbrace{\frac{\int_0^T \frac{\varepsilon}{2}(u(s)+\lambda\delta u)^2ds - \int_0^T \frac{\varepsilon}{2}u(s)^2ds}{\lambda}}^{C1}  + \overbrace{\frac{\frac{1}{2}x(u + \lambda\delta u,T)^2 - \frac{1}{2}x(u,T)^2}{\lambda}}^{C2}\\
+  \end{align*}
+  On va maintenant calculer C1 et C2.
+  \begin{align*}
+    C1 = &\lim_{\lambda\to 0^+} \frac{\int_0^T \frac{\varepsilon}{2}[(u(s)+\lambda\delta u)^2 - u(s)^2]ds}{\lambda}\\
+    = &\lim_{\lambda\to 0^+} \frac{\int_0^T \frac{\varepsilon}{2}[2\lambda u(s)\delta u + (\lambda\delta u)^2]ds}{\lambda}\\
+    = &\lim_{\lambda\to 0^+} \int_0^T \frac{\varepsilon}{2}[2 u(s)\delta u + \lambda\delta u^2]ds\\
+  \end{align*}
+  on a $\lim_{\lambda\to 0^+} \lambda\delta u^2 = 0$, donc
+  \begin{equation*}
+      C1 = &\int_0^T \varepsilon u(s)\delta uds\\
+  \end{equation*}
+  Au tour de C2.
+  \begin{align*}
+    C2 = &\lim_{\lambda\to 0^+} \frac{1}{2}\frac{x(u + \lambda\delta u,T)^2 - x(u,T)^2}{\lambda}\\
+    = &\lim_{\lambda\to 0^+} \frac{1}{2}\frac{x(u + \lambda\delta u,T) - x(u,T)}{\lambda}(x(u + \lambda\delta u,T) + x(u,T))\\
+    = &\lim_{\lambda\to 0^+} \frac{1}{2}x^{\prime}(u,\delta u)(T) (x(u + \lambda\delta u,T) + x(u,T))\\
+  \end{align*}
+  on a $\lim_{\lambda\to 0^+} x(u + \lambda\delta u,T) = x(u,T)$, donc
+  \begin{align*}
+    C2 = &\frac{1}{2}x^{\prime}(u,\delta u)(T)2x(u,T)\\
+     = &x^{\prime}(u,\delta u)(T)x(u,T)\\
+  \end{align*}
+  \begin{align*}
+    J^{\prime}(u,\delta u) = &C1 + C2\\
+    = &\int_0^T \varepsilon u(s)\delta uds + x^{\prime}(u,\delta u)(T)x(u,T)
+  \end{align*}
+
+  \item Déterminer la fonction $g(t)$
+
+  On a besoin de Taylor.
+  \begin{equation*}
+    J(u + \lambda\delta u) = J(u) + \lambda(\nabla J(u).\delta u) + o(||\delta u||)
+  \end{equation*}
+  On repart de la dérivé de Gateau.
+  \begin{align*}
+    J^{\prime}(u,\delta u) &= \lim_{\lambda\to 0^+} \frac{J(u+\lambda\delta u) - J(u)}{\lambda}\\
+    &= \lim_{\lambda\to 0^+} \frac{J(u) + \lambda(\nabla J(u).\delta u) + o(||\delta u||) - J(u)}{\lambda}\\
+    &= \lim_{\lambda\to 0^+} (\nabla J(u).\delta u) + o(||\delta u||)\\
+    &= \nabla J(u).\delta u + (||\delta u||\\
+    &= \int_0^T \nabla J(u(t))\delta udt\\
+  \end{align*}
+  Cela nous donne
+  \begin{equation*}
+      g(t) = \nabla J(u(t))\\
+  \end{equation*}
+\end{itemize}
+
+\section{Calcul de $\nabla J$}
+
+Montrer que :
+
+\begin{equation*}
+  \nabla J(u) = \varepsilon u + B^Tp.
+\end{equation*}
+
+\begin{align*}
+  \int_0^T \dot p(t)x^{\prime}(u,\delta u, t)dt &= [x^{\prime}(u, \delta u, t)p(t)]_0^T - \int_0^T p(t)\dot x^{\prime}(u, \delta u, t)dt\\
+  &= x^{\prime}(u, \delta u, T)p(T) - x^{\prime}(u, \delta u, 0)p(0) - \int_0^T p(t)\dot x^{\prime}(u, \delta u, t)dt\\
+  &= x^{\prime}(u, \delta u, T)p(T) - \int_0^T p(t)\dot x^{\prime}(u, \delta u, t)dt\\
+\end{align*}
+L'équation différencielle rétrograde nous donne :
+\begin{align*}
+  \dot p(t) &= -^tAp(t)\\
+  \int_0^T \dot p(t)x^{\prime}(u,\delta u, t)dt &= -\int_0^T ^tAp(t)x^{\prime}(u,\delta u,t)dt\\
+  x^{\prime}(u, \delta u, T)p(T) - \int_0^T p(t)\dot x^{\prime}(u, \delta u, t)dt &= -\int_0^T ^tAp(t)x^{\prime}(u,\delta u,t)dt\\
+  x^{\prime}(u, \delta u, T)p(T) &= -\int_0^T ^tAp(t)x^{\prime}(u,\delta u,t)dt + \int_0^T p(t)\dot x^{\prime}(u, \delta u, t)dt\\
+  &= \int_0^{T} -^tAp(t)x^{\prime}(u,\delta u,t) + p(t)[Ax^{\prime}(u,\delta u,t) + B\delta u]dt\\
+  &= \int_0^{T} -^tAp(t)x^{\prime}(u,\delta u,t) + p(t)Ax^{\prime}(u,\delta u,t) + p(t)B\delta udt\\
+  &= \int_0^T p(t)[(A-A)x^{\prime}(u,\delta u,t)] + p(t)B\delta udt\\
+  &= \int_0^T p(t)B\delta udt\\
+  &= \int_0^T B^tp(t)\delta udt\\
+\end{align*}
+On regroupes les résultats précédents (et on utilise la linéaritée des intégrales):
+\begin{align*}
+  J^{\prime}(u,\delta u) &= \int_0^T \nabla J(u(t))\delta udt\\
+  \int_0^T \nabla J(u(t))\delta udt &= \int_0^T \varepsilon u(t)\delta udt + x^{\prime}(u,\delta u)(T)x(u,T)\\
+  \int_0^T \nabla J(u(t))\delta udt &= \int_0^T \varepsilon u(t)\delta udt + \int_0^T B^tp(t)\delta udt\\
+  \int_0^T \nabla J(u(t))\delta udt &= \int_0^T \varepsilon u(t)\delta u + B^tp(t)\delta udt\\
+  0 &= \int_0^T \nabla J(u(t))\delta udt - \int_0^T \varepsilon u(t)\delta u + B^tp(t)\delta udt\\
+  0 &= \int_0^T \delta u[\nabla J(u(t)) - (\varepsilon u(t) + B^tp(t))]dt\\
+\end{align*}
+Comme on a fait l'identification par magie avec
+\begin{equation*}
+      \int_0^T \nabla J(u(t))\delta udt &= \int_0^T g(t)\delta udt\\
+\end{equation*}
+nous donne
+\begin{equation*}
+      g(t) = \nabla J(u(t))\\
+\end{equation*}
+et comme 
+\begin{equation*}
+  \nabla J(u).\delta u + o(||\delta u||) = \nabla J(u).\delta u\\
+\end{equation*}
+On admet
+\begin{equation*}
+  \nabla J(u) = \varepsilon u + B^Tp.
+\end{equation*}
+
+
+\section{Résolution numérique}
+
+Pour la résolution numérique, nous avons mis en place un programme en Python, en utilisant la bibliothèque Numpy, pour la manipulation de matrices. On utilise la méthode du gradient, dont chaque itération se décompose, dans notre cas, en 4 étapes :
+\begin{align*}
+  &-\text{1) résoudre :}
+  \left\{\begin{array}{l}
+           \dot x(t) = Ax(t) + Bu(t)\\
+           x(0) = x_0
+         \end{array}
+  \right.\\
+  &-\text{2) résoudre :}
+  \left\{\begin{array}{l}
+           \dot p(t) = A^tp(t)\\
+           p(t) = x(t)
+         \end{array}
+  \right.\\
+  &-\text{3) calculer : }
+  \nabla J(u(t)) = \varepsilon u(t) + B^tp(t)\\
+  &-\text{4) calculer : }
+  \nabla u_{n+1} = u_n - p\nabla J(u_n)\\
+\end{align*}
+
+\begin{itemize}
+
+  \item Pour résoudre 1, on utilise la méthode d'euler explicite :\\
+  On choisit un pas $pas$, et, pour $i$ allant de $0$ à $T$ :
+
+  \begin{equation*}
+    \left\{\begin{array}{l}
+             f(0) = x_0\\
+             f((i+1).pas) = f(i)+pas.f'(i)
+           \end{array}
+    \right.\\
+  \end{equation*}
+
+  \item Pour résoudre 2, on utilise la même méthode, mais, en quelques sortes, dans le sens opposé :\\
+        On choisit un pas $pas$, et, pour $i$ allant de $T$ à $0$ :
+  \begin{equation*}
+    \left\{\begin{array}{l}
+             f(T) = x_T\\
+             f((i-1).pas) = f(i)-pas.f'(i)
+           \end{array}
+    \right.\\
+  \end{equation*}
+
+  \item L'étape 3 ne pose pas de problème
+  \item L'étape 4 nous donne une nouvelle approximation de $u(t)$, à utiliser pour la prochaine itération, dans l'étape 1.
+
+\end{itemize}
+
+On itère la méthode du gradient un nombre fixé de fois (pas de condition d'arrêt).
+
+\section{Résultat}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10cm, height=8cm]{essai2}
+\caption{Fusée en rouge -- ISS en vert}
+\end{figure}
+Donnée pour la $Figure 1$\\
+$T = 1\\
+pas(méthode d'Euler) = 0.005\\
+Nombre d'itération : 500\\
+x_{1}(0) = 0.1\\
+x_{2}(0) = 0$\\\\
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=8cm, height=8cm]{essai}
+\caption{Fusée en rouge -- ISS en vert}
+\end{figure}
+Donnée pour la $Figure 2$\\
+$T = 1\\
+pas(méthode d'Euler) = 0.005\\
+Nombre d'itération : 5000\\
+x_{1}(0) = 0.2\\
+x_{2}(0) = 0$
+
+
+
+\end{document}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:  
