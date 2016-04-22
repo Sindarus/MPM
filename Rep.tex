@@ -1,4 +1,3 @@
- 
 \documentclass[a4paper,10pt]{article}
 %Mai 2009
 
@@ -137,7 +136,7 @@ nous donne
 \begin{equation*}
       g(t) = \nabla J(u(t))\\
 \end{equation*}
-et comme 
+et comme
 \begin{equation*}
   \nabla J(u).\delta u + o(||\delta u||) = \nabla J(u).\delta u\\
 \end{equation*}
@@ -171,27 +170,8 @@ Pour la résolution numérique, nous avons mis en place un programme en Python, en
 
 \begin{itemize}
 
-  \item Pour résoudre 1, on utilise la méthode d'euler explicite :\\
-  On choisit un pas $pas$, et, pour $i$ allant de $0$ à $T$ :
-
-  \begin{equation*}
-    \left\{\begin{array}{l}
-             f(0) = x_0\\
-             f((i+1).pas) = f(i)+pas.f'(i)
-           \end{array}
-    \right.\\
-  \end{equation*}
-
-  \item Pour résoudre 2, on utilise la même méthode, mais, en quelques sortes, dans le sens opposé :\\
-        On choisit un pas $pas$, et, pour $i$ allant de $T$ à $0$ :
-  \begin{equation*}
-    \left\{\begin{array}{l}
-             f(T) = x_T\\
-             f((i-1).pas) = f(i)-pas.f'(i)
-           \end{array}
-    \right.\\
-  \end{equation*}
-
+  \item Pour résoudre 1, on utilise la méthode d'euler améliorée.
+  \item Pour résoudre 2, on utilise la même méthode, mais, en quelques sortes, dans le sens opposé.
   \item L'étape 3 ne pose pas de problème
   \item L'étape 4 nous donne une nouvelle approximation de $u(t)$, à utiliser pour la prochaine itération, dans l'étape 1.
 
@@ -224,6 +204,17 @@ pas(méthode d'Euler) = 0.005\\
 Nombre d'itération : 5000\\
 x_{1}(0) = 0.2\\
 x_{2}(0) = 0$
+
+\section{programme}
+
+Pour tester la résolution avec notre programme, ouvrez ui2.py avec un éditeur de texte, choisissez les paramètres que vous voulez l.34-49, puis lancer $python3 ui2.py$ pour executer le programme. Un graphe apparaitra alors, c'est la trajectoire la fusée (en rouge) et celle de l'ISS (en vert), dans le référentiel de la terre. En fermant cette fenètre, vous aurez accès a une interface vous permettant de visualiser le parcours des deux objets en fonction du temps : utilisez le slider en bas de la fenetre pour faire avancer ou reculer le temps. En rouge, la fusée, en vert, l'ISS.
+
+Dépendances :
+* Tkinter
+* numpy
+* matplotlib
+
+pour tout installer : $sudo apt-get install python3-tk python3-numpy python3-matplotlib$
 
 
 
