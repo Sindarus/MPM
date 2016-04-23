@@ -31,23 +31,20 @@ class UI:
         #################################################
         ## CONFIG #######################################
         #################################################
-        pi = 3.1415926
-
         T = 1
-        w = (2*pi)/T                            #oméga
-
-        e = 0.001
-        rho = 0.03
-        pas = 0.005                             #pas pour Euler, en seconde
-        nb_boucle = 100
-
         Tmax = 1*T
+        e = 0.001                               #epsilon
+        rho = 0.03                              #pas de la méthode du gradient
+        pas = 0.005                             #pas de la méthode Euler
+        nb_boucle = 100                         #nombre d'itération de la méthode du gradient
+        x_depart = 0.1                          #x1 de départ
+        ###################################################
+
+        pi = 3.1415926
+        w = (2*pi)/T                            #oméga
         nb_pas = int(Tmax/pas)                  #nombre de pas pour arriver a Tmax
         self.nb_pas = nb_pas
         i_max = nb_pas-1                        #index max du temps
-
-        x_depart = 0.1                            #x1 de départ
-        ###################################################
 
         #initialisations
         A = matrix([[0, 1, 0, 0],

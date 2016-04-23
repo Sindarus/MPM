@@ -1,7 +1,0 @@
-MPM
-====
-
-Dependancies
------------
-* Tkinter
-* PIL
